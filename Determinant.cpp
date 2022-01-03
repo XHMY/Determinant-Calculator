@@ -3,14 +3,14 @@
 #include <pthread.h>
 #include <chrono>
 #include <fstream>
-#define size 10 // Modify to fit your matrix
+#define size 20 // Modify to fit your matrix
 using namespace std;
 
 int det[size];
 int mat[size][size];
 
-// declaring variable for storing thread id
-pthread_t thread[size];
+// declaring variable for storing my_thread id
+pthread_t my_thread[size];
 
 // function for finding determinant
 int determinant(vector<vector<int> > mat2, int s)
@@ -55,7 +55,7 @@ int determinant(vector<vector<int> > mat2, int s)
 }
 
 // function for finding determinant using first row
-// with each element of row a thread is associated.
+// with each element of row a my_thread is associated.
 void *createTd(void *arg)
 {
     int *ar = (int *)arg, i, j, k;
@@ -102,16 +102,16 @@ int main()
     for (i = 0; i < size; i++)
         det[i] = mat[0][i];
 
-    // creating thread
+    // creating my_thread
     for (i = 0; i < size; i++)
     {
         p[i] = i;
-        pthread_create(&thread[i], NULL, &createTd, (void *)&p[i]);
+        pthread_create(&my_thread[i], NULL, &createTd, (void *)&p[i]);
     }
 
     // waiting for all the threads to join
     for(i=0;i<size;i++)
-        pthread_join(thread[i], NULL);
+        pthread_join(my_thread[i], NULL);
     
     for (i = 0; i < size; i++)
     {
